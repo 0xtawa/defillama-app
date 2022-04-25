@@ -9,9 +9,9 @@ import Search from '../Search'
 import Panel from '../Panel'
 import { PageWrapper, ContentWrapper } from '..'
 import Filters from '../Filters'
-import { AllTvlOptions } from '../SettingsModal'
+import { AllTvlOptions } from '../SettingsModal/New'
 
-import { useDarkModeManager, useGetExtraTvlEnabled } from 'contexts/LocalStorage'
+import { useDarkModeManager } from 'contexts/LocalStorage'
 import { TYPE, ThemedBackground } from 'Theme'
 import { formattedNum, getPercentChange, getPrevTvlFromChart, getTokenDominance } from 'utils'
 import { useCalcProtocolsTvls } from 'hooks/data'
@@ -27,6 +27,7 @@ import LocalLoader from 'components/LocalLoader'
 import llamaLogo from '../../assets/peeking-llama.png'
 import Image from 'next/image'
 import Table, { columnsToShow } from 'components/Table'
+import { useExtraTvlsEnabled } from 'hooks'
 
 const ListOptions = styled(AutoRow)`
   height: 40px;
@@ -93,9 +94,9 @@ const setSelectedChain = (newSelectedChain) => (newSelectedChain === 'All' ? '/'
 const columns = columnsToShow('protocolName', 'chains', '1dChange', '7dChange', '1mChange', 'tvl', 'mcaptvl')
 
 function GlobalPage({ selectedChain = 'All', chainsSet, filteredProtocols, chart, extraVolumesCharts = {} }) {
-  const extraTvlsEnabled = useGetExtraTvlEnabled()
-
   const router = useRouter()
+
+  const extraTvlsEnabled = useExtraTvlsEnabled()
 
   const denomination = router.query?.currency ?? 'USD'
 
@@ -233,8 +234,8 @@ function GlobalPage({ selectedChain = 'All', chainsSet, filteredProtocols, chart
                 .join('&')}`}
             >
               <RowBetween>
-              <DownloadIcon />
-              <TYPE.main>&nbsp;&nbsp;.csv</TYPE.main>
+                <DownloadIcon />
+                <TYPE.main>&nbsp;&nbsp;.csv</TYPE.main>
               </RowBetween>
             </DownloadButton>
           </RowBetween>
@@ -276,7 +277,11 @@ function GlobalPage({ selectedChain = 'All', chainsSet, filteredProtocols, chart
           <Search />
           <Panel background={true} style={{ textAlign: 'center' }}>
             <TYPE.main fontWeight={400}>
-              We've launched a neutral wiki for DeFi and crypto. Check it out <BasicLink style={{textDecoration:"underline"}} href="https://wiki.defillama.com/wiki/Main_Page">here</BasicLink>!
+              We've launched a neutral wiki for DeFi and crypto. Check it out{' '}
+              <BasicLink style={{ textDecoration: 'underline' }} href="https://wiki.defillama.com/wiki/Main_Page">
+                here
+              </BasicLink>
+              !
             </TYPE.main>
           </Panel>
         </AutoColumn>
@@ -311,14 +316,14 @@ function GlobalPage({ selectedChain = 'All', chainsSet, filteredProtocols, chart
               )}
             </Panel>
           </BreakpointPanels>
-            <div
-              style={{
-                marginTop: '0px',
-                marginBottom: '-34px',
-              }}
-            >
-              <Image src={llamaLogo} width={41} height={34} onClick={activateEasterEgg} alt="" />
-            </div>
+          <div
+            style={{
+              marginTop: '0px',
+              marginBottom: '-34px',
+            }}
+          >
+            <Image src={llamaLogo} width={41} height={34} onClick={activateEasterEgg} alt="" />
+          </div>
         </div>
 
         <AllTvlOptions style={{ display: 'flex', justifyContent: 'center' }} />

@@ -10,6 +10,6 @@ export const dataFilters = {
 type Keys = keyof typeof dataFilters
 type Values = typeof dataFilters[Keys]
 
-export const setCookie = (cookie: Values) => {
-  Cookies.set(cookie, 'true', { expires: 30 * 24 * 60 * 60 * 1000 }) // 1 month
+export const setCookie = (cookie: Values, value: 'true' | 'false') => {
+  Cookies.set(cookie, value, { expires: 30 * 24 * 60 * 60 * 1000 }) // 1 month
 }

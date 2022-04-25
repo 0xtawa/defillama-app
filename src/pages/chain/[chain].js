@@ -1,25 +1,7 @@
+import { dataFilters } from 'utils/cookies'
 import ChainPage from '../../components/ChainPage'
-import { PROTOCOLS_API } from '../../constants/index'
 import { GeneralLayout } from '../../layout'
-import { getChainPageData, revalidate } from '../../utils/dataApi'
-
-export async function getStaticProps({ params }) {
-  const chain = params.chain
-  const data = await getChainPageData(chain)
-  return {
-    ...data,
-    revalidate: revalidate()
-  }
-}
-export async function getStaticPaths() {
-  const res = await fetch(PROTOCOLS_API)
-
-  const paths = (await res.json()).chains.map(chain => ({
-    params: { chain }
-  }))
-
-  return { paths, fallback: 'blocking' }
-}
+import { getChainPageData } from '../../utils/dataApi'
 
 export default function Chain({ chain, ...props }) {
   return (
@@ -27,4 +9,21 @@ export default function Chain({ chain, ...props }) {
       <ChainPage {...props} selectedChain={chain} />
     </GeneralLayout>
   )
+}
+
+export async function getServerSideProps({ req, query }) {
+  const filters = {}
+
+  for (const key of Object.keys(dataFilters)) {
+    filters[key] = req.cookies[key] === 'true' ? true : false
+  }
+
+  const { props } = await getChainPageData(query?.chain ?? '')
+
+  return {
+    props: {
+      ...props,
+      filters,
+    },
+  }
 }

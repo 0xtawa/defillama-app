@@ -44,7 +44,8 @@
     "swr": "^1.0.1",
     "toformat": "^2.0.0",
     "uuid": "^8.3.2",
-    "wcag-contrast": "^3.0.0"
+    "wcag-contrast": "^3.0.0",
+    "zustand": "^4.0.0-rc.0"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",

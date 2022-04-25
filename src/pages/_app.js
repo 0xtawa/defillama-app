@@ -3,6 +3,11 @@ import { useRouter } from 'next/router'
 import * as Fathom from 'fathom-client'
 import LocalStorageContextProvider, { Updater as LocalStorageContextUpdater } from '../contexts/LocalStorage'
 
+import create from 'zustand'
+import createContext from 'zustand/context'
+
+export const { Provider, useStore: useTvlFilters } = createContext()
+
 function App({ Component, pageProps }) {
   const router = useRouter()
 
@@ -22,13 +27,22 @@ function App({ Component, pageProps }) {
     return () => {
       router.events.off('routeChangeComplete', onRouteChangeComplete)
     }
-  }, [])
+  })
 
   return (
-    <LocalStorageContextProvider>
-      <LocalStorageContextUpdater />
-      <Component {...pageProps} />
-    </LocalStorageContextProvider>
+    <Provider
+      createStore={() =>
+        create((set) => ({
+          tvlFilters: pageProps.filters || {},
+          updateTvlOption: (key, value) => set((state) => ({ tvlFilters: { ...state.tvlFilters, [key]: value } })),
+        }))
+      }
+    >
+      <LocalStorageContextProvider>
+        <LocalStorageContextUpdater />
+        <Component {...pageProps} />
+      </LocalStorageContextProvider>
+    </Provider>
   )
 }
 

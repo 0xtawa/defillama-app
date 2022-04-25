@@ -5,6 +5,7 @@ export { default as useInfiniteScroll } from './useInfiniteScroll'
 export { default as useFetchInfiniteScroll } from './useFetchInfiniteScroll'
 export { default as useProtocolColor } from './useProtocolColor'
 export { default as useResize } from './useResize'
+export { useExtraTvlsEnabled } from './useExtraTvlsEnabled'
 export * from './useBreakpoints'
 
 export function useCopyClipboard(timeout = 500) {
