@@ -11,7 +11,7 @@ export default function Chain({ chain, ...props }) {
   )
 }
 
-export async function getServerSideProps({ req, query }) {
+export async function getServerSideProps({ req, res, query }) {
   const filters = {}
 
   for (const key of Object.keys(dataFilters)) {
@@ -19,6 +19,8 @@ export async function getServerSideProps({ req, query }) {
   }
 
   const { props } = await getChainPageData(query?.chain ?? '')
+
+  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
   return {
     props: {
