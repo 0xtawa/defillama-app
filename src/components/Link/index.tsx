@@ -73,7 +73,7 @@ export const BasicLinkStyle = styled.a`
 `
 
 export const BasicLink = ({ href, children, ...props }: BasicLinkProps) => (
-  <RouterLink href={href} passHref prefetch={false}>
+  <RouterLink href={href} passHref>
     <BasicLinkStyle {...props}>{children}</BasicLinkStyle>
   </RouterLink>
 )

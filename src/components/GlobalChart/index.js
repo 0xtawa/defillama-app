@@ -6,6 +6,7 @@ import { RowFixed } from '../Row'
 import { OptionButton } from '../ButtonStyled'
 import { getTimeframe } from '../../utils'
 import { TYPE } from '../../Theme'
+import WorkerChart from './WorkerChart'
 
 const CHART_VIEW = {
   VOLUME: 'Volume',
@@ -91,7 +92,7 @@ const GlobalChart = ({
     <>
       {chartDataFiltered && chartView === CHART_VIEW.LIQUIDITY && (
         <ResponsiveContainer aspect={60 / 28} ref={ref}>
-          <TradingViewChart
+          <WorkerChart
             data={dailyData}
             base={totalLiquidity}
             baseChange={liquidityChange}
