@@ -11,6 +11,7 @@ import { ArrowRight, Search as SearchIcon, X as XIcon } from 'react-feather'
 import { DeFiTvlOptions } from 'components/Select'
 import { FixedSizeList } from 'react-window'
 import { useFetchPeggedList, useFetchProtocolsList } from 'utils/dataApi'
+import { useFetchYieldsList } from '../../utils/categories/yield'
 
 const Wrapper = styled.nav`
   display: flex;
@@ -193,6 +194,23 @@ export default function Search({ step }: { step: IStep }) {
 
     return pathname.startsWith('/protocol') ? [...protocolData, ...chainData] : [...chainData, ...protocolData]
   }, [data, pathname])
+
+  return <SearchDefault data={searchData} loading={loading} step={step} />
+}
+
+// TODO: add icons
+export function YieldsSearch({ step }: { step: IStep }) {
+  const { data, loading } = useFetchYieldsList()
+
+  const searchData = useMemo(() => {
+    return (
+      data?.map((el) => ({
+        name: `${el.name} (${el.symbol.toUpperCase()})`,
+        symbol: el.symbol.toUpperCase(),
+        route: `/yields/token/${el.symbol.toUpperCase()}`,
+      })) ?? []
+    )
+  }, [data])
 
   return <SearchDefault data={searchData} loading={loading} step={step} />
 }
